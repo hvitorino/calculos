@@ -11,5 +11,9 @@ public class ValorTaxa extends Decimal {
 	public ValorTaxa(Double valor, Integer precisao) {
 		super(valor, precisao);
 	}
+
+	public ValorTaxa(Decimal decimal) {
+		super(decimal.getValor(), PRECISAO_PADRAO);
+	}
 	
 }

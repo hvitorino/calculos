@@ -12,4 +12,8 @@ public class ValorMonetario extends Decimal {
 		super(valor, precisao);
 	}
 	
+	public ValorMonetario(Decimal decimal) {
+		super(decimal.getValor(), PRECISAO_PADRAO);
+	}
+	
 }

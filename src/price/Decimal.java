@@ -5,11 +5,18 @@ import java.math.RoundingMode;
 
 public class Decimal {
 
+	public static final Decimal UM = new Decimal(1);
+	public static final Decimal CEM = new Decimal(100);
+
 	private final RoundingMode ARREDONDAMENTO_PADRAO = RoundingMode.HALF_EVEN;
 	private final Integer PRECISAO_PADRAO = 10; 
 	
 	private final Double valor;
 	private final Integer precisao;
+
+	public Decimal(Decimal decimal) {
+		this(decimal.getValor());
+	}
 
 	public Decimal(Double valor) {
 		
