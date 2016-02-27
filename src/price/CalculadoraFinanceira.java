@@ -222,7 +222,7 @@ public class CalculadoraFinanceira {
 		
 		Calendar dataCalculada = Calendar.getInstance();
 		dataCalculada.setTime(data);
-		dataCalculada.add(Calendar.MONTH, - 1);
+		dataCalculada.add(Calendar.DAY_OF_MONTH, -30);
 		
 		return dataCalculada.getTime();
 	}

@@ -46,4 +46,12 @@ public class FinanciamentoDe20000Em12VezesCom60DiasDeCarencia {
 		
 		assertEquals(new Double(1861.10), parcela.getValor().getValor());
 	}
+	
+	@Test
+	public void saldoDevedorDaPrimeiraParcela20mil300() {
+		
+		Parcela parcela = financiamento.getParcelas().get(0);
+		
+		assertEquals(new Double(20300.00), parcela.getSaldoDevedor().getValor());
+	}
 }
