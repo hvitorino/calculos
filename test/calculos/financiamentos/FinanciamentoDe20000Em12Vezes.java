@@ -54,4 +54,10 @@ public class FinanciamentoDe20000Em12Vezes {
 		
 		assertEquals(new Double(20300.00), parcela.getSaldoDevedor().getValor());
 	}
+	
+	@Test
+	public void valorJurosTotal() {
+		
+		assertEquals(new Double(2333.25), financiamento.getJurosTotal().getValor());
+	}
 }
