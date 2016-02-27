@@ -1,6 +1,6 @@
 package price;
 
-public class ValorMonetario extends Decimal {
+public class ValorMonetario extends ValorDecimal {
 
 	private static int PRECISAO_PADRAO = 2;
 	
@@ -12,7 +12,7 @@ public class ValorMonetario extends Decimal {
 		super(valor, precisao);
 	}
 	
-	public ValorMonetario(Decimal decimal) {
+	public ValorMonetario(ValorDecimal decimal) {
 		super(decimal.getValor(), PRECISAO_PADRAO);
 	}
 	

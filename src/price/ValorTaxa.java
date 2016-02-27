@@ -1,6 +1,6 @@
 package price;
 
-public class ValorTaxa extends Decimal {
+public class ValorTaxa extends ValorDecimal {
 
 	private static int PRECISAO_PADRAO = 4;
 	
@@ -12,7 +12,7 @@ public class ValorTaxa extends Decimal {
 		super(valor, precisao);
 	}
 
-	public ValorTaxa(Decimal decimal) {
+	public ValorTaxa(ValorDecimal decimal) {
 		super(decimal.getValor(), PRECISAO_PADRAO);
 	}
 	

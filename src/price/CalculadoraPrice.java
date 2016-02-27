@@ -4,15 +4,15 @@ public class CalculadoraPrice {
 
 	public ValorMonetario calcularValorDaParcela(ValorMonetario valorSolicitadoPeloCliente, ValorTaxa taxaJurosMensais, ValorInteiro quantidadeDeParcelas) {
 		
-		Decimal cem = new Decimal(100);
-		Decimal um = new Decimal(1);
+		ValorDecimal cem = new ValorDecimal(100);
+		ValorDecimal um = new ValorDecimal(1);
 		
-		Decimal juros = taxaJurosMensais.dividePor(cem);
-		Decimal fator = um.soma(juros).potenciaDe(quantidadeDeParcelas);
-		Decimal fatorVezesJuros = fator.multiplicaPor(juros);
-		Decimal fatorMenosUm = fator.subtrai(um);
-		Decimal fatoresDivididos = fatorVezesJuros.dividePor(fatorMenosUm);
-		Decimal resultado = valorSolicitadoPeloCliente.multiplicaPor(fatoresDivididos);
+		ValorDecimal juros = taxaJurosMensais.dividePor(cem);
+		ValorDecimal fator = um.soma(juros).potenciaDe(quantidadeDeParcelas);
+		ValorDecimal fatorVezesJuros = fator.multiplicaPor(juros);
+		ValorDecimal fatorMenosUm = fator.subtrai(um);
+		ValorDecimal fatoresDivididos = fatorVezesJuros.dividePor(fatorMenosUm);
+		ValorDecimal resultado = valorSolicitadoPeloCliente.multiplicaPor(fatoresDivididos);
 		
 		return new ValorMonetario(resultado.getValor()); 
 	}
