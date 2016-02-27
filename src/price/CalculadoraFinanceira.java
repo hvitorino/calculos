@@ -30,6 +30,8 @@ public class CalculadoraFinanceira {
 
 		ValorMonetario saldoDevedorAtual = new ValorMonetario(saldoDevedorInicial);
 		
+		ValorMonetario jurosTotal = new ValorMonetario(0.0);
+		
 		for (int numeroParcela = 1; numeroParcela <= opcoes.getQuantidadeParcelas().getValor(); numeroParcela++) {
 			
 			Date dataVencimento = calcularDataVencimentoParcela(
@@ -62,10 +64,15 @@ public class CalculadoraFinanceira {
 			
 			financiamento.adicionaParcela(parcela);
 			
+			jurosTotal = jurosTotal.soma(valorJuros)
+					.valorMonetario();
+			
 			saldoDevedorAtual = saldoDevedorAtual
 					.subtrai(valorPrincipal)
 					.valorMonetario();
 		}
+		
+		financiamento.setJurosTotal(jurosTotal);
 
 		return financiamento;
 	}

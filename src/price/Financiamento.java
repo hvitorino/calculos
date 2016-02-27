@@ -7,6 +7,7 @@ public class Financiamento {
 
 	private ArrayList<Parcela> parcelas;
 	private OpcoesFinanciamento opcoes;
+	private ValorMonetario jurosTotal;
 	
 	public Financiamento(OpcoesFinanciamento opcoes) {
 		this.parcelas = new ArrayList<>();
@@ -27,5 +28,13 @@ public class Financiamento {
 
 	public void setOpcoes(OpcoesFinanciamento opcoes) {
 		this.opcoes = opcoes;
+	}
+
+	public ValorMonetario getJurosTotal() {
+		return jurosTotal;
+	}
+
+	public void setJurosTotal(ValorMonetario jurosTotal) {
+		this.jurosTotal = jurosTotal;
 	}
 }

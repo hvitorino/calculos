@@ -12,6 +12,6 @@ public class ValoresTaxa {
 	public void possuemPrecisao4() {
 		ValorTaxa taxa = new ValorTaxa(10.1201);
 		
-		assertEquals(new Double(10.12), taxa.getValor());
+		assertEquals(new Double(10.1201), taxa.getValor());
 	}
 }
