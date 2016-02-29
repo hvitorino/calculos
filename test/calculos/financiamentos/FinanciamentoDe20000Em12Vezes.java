@@ -13,6 +13,7 @@ import price.Financiar;
 import price.OpcoesFinanciamento;
 import price.Parcela;
 import price.PeriodicidadeTaxa;
+import price.ValorMonetario;
 
 public class FinanciamentoDe20000Em12Vezes {
 	
@@ -34,30 +35,36 @@ public class FinanciamentoDe20000Em12Vezes {
 	}
 	
 	@Test
-	public void possui12Parcelas() {
-		
-		assertEquals(12, financiamento.getParcelas().size());
+	public void valorParcela1861ponto10() {
+		assertEquals(new Double(1861.10), financiamento.getValorPrestacao().getValor());
 	}
 	
 	@Test
-	public void parcelaDe1861ponto10() {
-		
-		Parcela parcela = financiamento.getParcelas().get(0);
-		
-		assertEquals(new Double(1861.10), parcela.getValor().getValor());
+	public void valorEmprestimoAjustado20300() {
+		assertEquals(new Double(20300.00), financiamento.getValorEmprestimoAjustado().getValor());
 	}
 	
 	@Test
-	public void saldoDevedorDaPrimeiraParcela20mil300() {
-		
-		Parcela parcela = financiamento.getParcelas().get(0);
-		
-		assertEquals(new Double(20300.00), parcela.getSaldoDevedor().getValor());
-	}
-	
-	@Test
-	public void valorJurosTotal() {
-		
+	public void valorTotalJuros2333ponto25() {
 		assertEquals(new Double(2333.25), financiamento.getValorTotalJuros().getValor());
+	}
+	
+	@Test
+	public void valorTotalEmprestimoAjustado22333ponto25() {
+		assertEquals(new Double(22333.25), financiamento.getValorEmprestimoAjustado().getValor());
+	}
+	
+	@Test
+	public void valorPrincipalTotal20000() {
+		
+		ValorMonetario principalTotal = new ValorMonetario(0.0);
+		
+		for(Parcela parcela : financiamento.getParcelas()) {
+			principalTotal = principalTotal
+					.soma(parcela.getValorPrincipal())
+					.valorMonetario();
+		}
+		
+		assertEquals(new Double(500000), principalTotal.getValor());
 	}
 }
