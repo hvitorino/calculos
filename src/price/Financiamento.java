@@ -5,9 +5,12 @@ import java.util.List;
 
 public class Financiamento {
 
-	private ArrayList<Parcela> parcelas;
 	private OpcoesFinanciamento opcoes;
-	private ValorMonetario jurosTotal;
+	private ArrayList<Parcela> parcelas;
+
+	private ValorMonetario valorEmprestimoAjustado;
+	private ValorMonetario valorTotalEmprestimoAjustado;
+	private ValorMonetario valorPrestacao;
 	
 	public Financiamento(OpcoesFinanciamento opcoes) {
 		this.parcelas = new ArrayList<>();
@@ -18,6 +21,46 @@ public class Financiamento {
 		this.parcelas.add(parcela);
 	}
 
+	public ValorMonetario getValorEmprestimoAjustado() {
+		return valorEmprestimoAjustado;
+	}
+
+	public void setValorEmprestimoAjustado(ValorMonetario valorFinanciadoAjustado) {
+		this.valorEmprestimoAjustado = valorFinanciadoAjustado;
+	}
+
+	public ValorMonetario getJurosTotal() {
+		
+		ValorMonetario jurosTotal = new ValorMonetario(0.0);
+		
+		for(Parcela parcela : this.getParcelas()) {
+			jurosTotal = jurosTotal.soma(parcela.getValorJuros())
+					.valorMonetario();
+		}
+		
+		return jurosTotal;
+	}
+
+	public ValorMonetario getValorTotalEmprestimoAjustado() {
+		return valorTotalEmprestimoAjustado;
+	}
+
+	public void setValorTotalEmprestimoAjustado(ValorMonetario valorTotalEmprestimoAjustado) {
+		this.valorTotalEmprestimoAjustado = valorTotalEmprestimoAjustado;
+	}
+
+	public ValorMonetario getValorPrestacao() {
+		return valorPrestacao;
+	}
+
+	public void setValorPrestacao(ValorMonetario valorPrestacao) {
+		this.valorPrestacao = valorPrestacao;
+	}
+
+	public void setParcelas(ArrayList<Parcela> parcelas) {
+		this.parcelas = parcelas;
+	}
+
 	public List<Parcela> getParcelas() {
 		return this.parcelas;
 	}
@@ -26,15 +69,7 @@ public class Financiamento {
 		return opcoes;
 	}
 
-	public void setOpcoes(OpcoesFinanciamento opcoes) {
+	private void setOpcoes(OpcoesFinanciamento opcoes) {
 		this.opcoes = opcoes;
-	}
-
-	public ValorMonetario getJurosTotal() {
-		return jurosTotal;
-	}
-
-	public void setJurosTotal(ValorMonetario jurosTotal) {
-		this.jurosTotal = jurosTotal;
 	}
 }

@@ -17,20 +17,25 @@ public class CalculadoraFinanceira {
 				subtrairDatas(
 						umMesAntesDoPrimeiroVencimento,
 						opcoes.getDataFinanciamento())); 
-				
-		ValorMonetario saldoDevedorInicial = calcularSaldoDevedorAposCarencia(
-				opcoes.getValorFinanciado(),
+		
+		ValorMonetario jurosCarencia = calcularJurosCarencia(opcoes.getValorFinanciado(),
 				jurosMensais,
 				carenciaEmDias);
 		
-		ValorMonetario valorDaParcela = calcularValorDaParcela(
+		ValorMonetario valorJurosCarenciaParcelado = new ValorMonetario(jurosCarencia);
+		
+		ValorMonetario saldoDevedorInicial = opcoes.getValorFinanciado()
+				.soma(jurosCarencia)
+				.valorMonetario();
+		
+		ValorMonetario valorParcela = calcularValorDaParcela(
 				saldoDevedorInicial,
 				jurosMensais,
 				opcoes.getQuantidadeParcelas());
 
 		ValorMonetario saldoDevedorAtual = new ValorMonetario(saldoDevedorInicial);
 		
-		ValorMonetario jurosTotal = new ValorMonetario(0.0);
+		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
 		
 		for (int numeroParcela = 1; numeroParcela <= opcoes.getQuantidadeParcelas().getValor(); numeroParcela++) {
 			
@@ -38,43 +43,85 @@ public class CalculadoraFinanceira {
 					opcoes.getDataPrimeiroVencimento(),
 					numeroParcela);
 			
-			ValorMonetario valorJuros = jurosMensais.getTaxa()
-						.multiplicaPor(saldoDevedorAtual)
-						.dividePor(ValorDecimal.CEM)
-						.valorMonetario();
-
-			ValorMonetario valorPrincipal = valorDaParcela
-						.subtrai(valorJuros)
-						.valorMonetario();
+			 ValorMonetario valorJurosSemCarencia = jurosMensais.getTaxa()
+					 .multiplicaPor(saldoDevedorAtual)
+					 .dividePor(ValorDecimal.CEM)
+					 .valorMonetario();
+			
+			ValorMonetario valorJurosParcela = calcularJurosParcela(
+					valorParcela, 
+					saldoDevedorAtual, 
+					valorJurosCarenciaParcelado, 
+					jurosMensais);
+			
+			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = valorParcela.subtrai(valorJurosSemCarencia)
+					.valorMonetario(); 
+			
+			valorJurosCarenciaParcelado = valorJurosCarenciaParcelado
+					.subtrai(valorJurosCarenciaAcrescidoNaParcela)
+					.valorMonetario();
+			
+			ValorMonetario valorPrincipalParcela = valorParcela
+					.subtrai(valorJurosParcela)
+					.valorMonetario();
 			
 			ValorMonetario valorIofDiario = calcularIofDiarioParcela(
-					valorPrincipal,
+					valorPrincipalParcela,
 					opcoes.getTaxaIofDiario(),
 					opcoes.getDataFinanciamento(),
 					dataVencimento);
 
 			Parcela parcela = criarParcela(
-					valorDaParcela,
+					valorParcela,
 					saldoDevedorAtual,
 					numeroParcela,
 					dataVencimento,
-					valorJuros,
-					valorPrincipal,
+					valorJurosParcela,
+					valorPrincipalParcela,
 					valorIofDiario);
 			
-			financiamento.adicionaParcela(parcela);
-			
-			jurosTotal = jurosTotal.soma(valorJuros)
-					.valorMonetario();
-			
 			saldoDevedorAtual = saldoDevedorAtual
-					.subtrai(valorPrincipal)
+					.soma(valorJurosSemCarencia)
+					.subtrai(valorJurosParcela)
+					.subtrai(valorPrincipalParcela)
 					.valorMonetario();
+			
+			financiamento.adicionaParcela(parcela);
 		}
 		
-		financiamento.setJurosTotal(jurosTotal);
-
 		return financiamento;
+	}
+
+	private static ValorMonetario calcularJurosParcela(ValorMonetario valorParcela, ValorMonetario saldoDevedorAtual,
+			ValorMonetario jurosCarenciaNaParcela, Juros jurosMensais) {
+		
+		ValorMonetario valorJurosParcela = jurosMensais.getTaxa()
+			.multiplicaPor(saldoDevedorAtual)
+			.dividePor(ValorDecimal.CEM)
+			.valorMonetario();
+		
+		if (valorJurosParcela.soma(jurosCarenciaNaParcela).getValor() > valorParcela.getValor()) {
+			valorJurosParcela = new ValorMonetario(valorParcela);
+		}
+		
+		return valorJurosParcela;
+	}
+
+	private static ValorMonetario calcularJurosCarencia(ValorMonetario valorFinanciado, Juros juros,
+			ValorInteiro carenciaEmDias) {
+		
+		PeriodicidadeTaxa periodicidade = PeriodicidadeTaxa
+				.criarPeriodicidadeDiasCorridos(carenciaEmDias);
+		
+		Juros jurosEquivalente = converterParaJurosCompostosDoPeriodo(
+				juros,
+				periodicidade);
+		
+		ValorDecimal valorJurosCarencia = valorFinanciado.multiplicaPor(
+						jurosEquivalente.getTaxa()
+							.dividePor(ValorDecimal.CEM));
+		
+		return valorJurosCarencia.valorMonetario();
 	}
 
 	public static ValorMonetario calcularValorDaParcela(ValorMonetario saldoBase, Juros juros,
