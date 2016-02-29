@@ -67,4 +67,52 @@ public class FinanciamentoDe500000Em72Vezes {
 		
 		assertEquals(new Double(500000), principalTotal.getValor());
 	}
+	
+	@Test
+	public void prazoPrimeiraParcela60Dias() {
+		
+		Parcela primeiraParcela = financiamento.getParcelas().get(0);
+
+		assertEquals(new Double(60), primeiraParcela.getPrazoEmDias().getValor());
+	}
+	
+	@Test
+	public void prazoSegundaParcela90Dias() {
+		
+		Parcela primeiraParcela = financiamento.getParcelas().get(1);
+
+		assertEquals(new Double(90), primeiraParcela.getPrazoEmDias().getValor());
+	}
+	
+	@Test
+	public void prazoTerceiraParcela121Dias() {
+		
+		Parcela primeiraParcela = financiamento.getParcelas().get(2);
+
+		assertEquals(new Double(121), primeiraParcela.getPrazoEmDias().getValor());
+	}
+	
+	@Test
+	public void prazoQuartaParcela151Dias() {
+		
+		Parcela primeiraParcela = financiamento.getParcelas().get(3);
+
+		assertEquals(new Double(151), primeiraParcela.getPrazoEmDias().getValor());
+	}
+	
+	@Test
+	public void prazoVigesimaNonaParcela912Dias() {
+		
+		Parcela primeiraParcela = financiamento.getParcelas().get(28);
+
+		assertEquals(new Double(912), primeiraParcela.getPrazoEmDias().getValor());
+	}
+	
+	@Test
+	public void prazoUltimaParcela2220Dias() {
+		
+		Parcela primeiraParcela = financiamento.getParcelas().get(71);
+
+		assertEquals(new Double(2220), primeiraParcela.getPrazoEmDias().getValor());
+	}
 }

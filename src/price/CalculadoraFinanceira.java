@@ -1,11 +1,13 @@
 package price;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class CalculadoraFinanceira {
 
-	public static Financiamento calcularFinanciamento(OpcoesFinanciamento opcoes) {
+	public static Financiamento calcularFinanciamento(OpcoesFinanciamento opcoes) throws ParseException {
 		
 		Financiamento financiamento = new Financiamento(opcoes);
 		
@@ -41,7 +43,11 @@ public class CalculadoraFinanceira {
 					opcoes.getDataPrimeiroVencimento(),
 					numeroParcela);
 			
-			 ValorMonetario valorJurosSemCarencia = jurosMensais.getTaxa()
+			ValorInteiro prazoParcelaEmDias = subtrairDatas(
+					dataVencimento,
+					opcoes.getDataFinanciamento());
+			
+			ValorMonetario valorJurosSemCarencia = jurosMensais.getTaxa()
 					 .multiplicaPor(saldoDevedorAtual)
 					 .dividePor(ValorDecimal.CEM)
 					 .valorMonetario();
@@ -83,7 +89,8 @@ public class CalculadoraFinanceira {
 						dataVencimento,
 						valorJurosParcela,
 						valorPrincipalParcela,
-						valorIofDiario));
+						valorIofDiario,
+						prazoParcelaEmDias));
 		}
 		
 		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
@@ -272,22 +279,39 @@ public class CalculadoraFinanceira {
 		return dataVencimento;
 	}
 	
-	private static Date subtrairUmMes(Date data) {
+	public static Date subtrairUmMes(Date data) throws ParseException {
 		
 		Calendar dataCalculada = Calendar.getInstance();
 		dataCalculada.setTime(data);
-		dataCalculada.add(Calendar.DAY_OF_MONTH, -30);
 		
-		return dataCalculada.getTime();
+		if (dataCalculada.get(Calendar.MONTH) == Calendar.MARCH 
+				&& dataCalculada.get(Calendar.DAY_OF_MONTH) > 28) {
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			String textoPrimeiroMarco = "01/03/" + dataCalculada.get(Calendar.YEAR);
+			
+			Calendar dataPrimeiroMarco = Calendar.getInstance();
+			dataPrimeiroMarco.setTime(formatter.parse(textoPrimeiroMarco));
+			
+			dataPrimeiroMarco.add(Calendar.DAY_OF_MONTH, -1);
+			
+			return dataPrimeiroMarco.getTime();
+		} else {
+			
+			dataCalculada.add(Calendar.DAY_OF_MONTH, -30);
+			
+			return dataCalculada.getTime();
+		}
 	}
 	
 	private static Parcela criarParcela(ValorMonetario valorDaParcela, ValorMonetario saldoDevedor, int numeroParcela,
 			Date dataVencimento, ValorMonetario valorJuros, ValorMonetario valorPrincipal,
-			ValorMonetario valorIofDiario) {
+			ValorMonetario valorIofDiario, ValorInteiro prazoParcelaEmDias) {
 		
 		Parcela parcela = new Parcela();
 		
 		parcela.setNumero(new ValorInteiro(numeroParcela));
+		parcela.setPrazoEmDias(prazoParcelaEmDias);
 		parcela.setSaldoDevedor(saldoDevedor);
 		parcela.setValor(valorDaParcela);
 		parcela.setValorPrincipal(valorPrincipal);
@@ -298,7 +322,7 @@ public class CalculadoraFinanceira {
 		return parcela;
 	}
 
-	private static ValorInteiro subtrairDatas(Date umaData, Date outraData) {
+	public static ValorInteiro subtrairDatas(Date umaData, Date outraData) {
 		Long milisegundosPorDia = 86400000L;
 		
 		Long milisegundosUmaData = umaData.getTime();

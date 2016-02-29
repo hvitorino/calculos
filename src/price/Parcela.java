@@ -5,6 +5,7 @@ import java.util.Date;
 public class Parcela {
 
 	private ValorInteiro numero;
+	private ValorInteiro prazoEmDias;
 	private ValorMonetario saldoDevedor;
 	private ValorMonetario valor;
 	private ValorMonetario valorPrincipal;
@@ -75,6 +76,14 @@ public class Parcela {
 
 	public void setDataVencimento(Date dataVencimento) {
 		this.dataVencimento = dataVencimento;
+	}
+
+	public ValorInteiro getPrazoEmDias() {
+		return prazoEmDias;
+	}
+
+	public void setPrazoEmDias(ValorInteiro prazoEmDias) {
+		this.prazoEmDias = prazoEmDias;
 	}
 
 }
