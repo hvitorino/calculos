@@ -35,9 +35,6 @@ public class CalculadoraFinanceira {
 
 		ValorMonetario saldoDevedorAtual = new ValorMonetario(saldoDevedorInicial);
 		
-		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
-		financiamento.setValorPrestacao(valorParcela);
-		
 		for (int numeroParcela = 1; numeroParcela <= opcoes.getQuantidadeParcelas().getValor(); numeroParcela++) {
 			
 			Date dataVencimento = calcularDataVencimentoParcela(
@@ -72,23 +69,25 @@ public class CalculadoraFinanceira {
 					opcoes.getDataFinanciamento(),
 					dataVencimento);
 
-			Parcela parcela = criarParcela(
-					valorParcela,
-					saldoDevedorAtual,
-					numeroParcela,
-					dataVencimento,
-					valorJurosParcela,
-					valorPrincipalParcela,
-					valorIofDiario);
-			
 			saldoDevedorAtual = saldoDevedorAtual
 					.soma(valorJurosSemCarencia)
 					.subtrai(valorJurosParcela)
 					.subtrai(valorPrincipalParcela)
 					.valorMonetario();
 			
-			financiamento.adicionaParcela(parcela);
+			financiamento.adicionaParcela(
+					criarParcela(
+						valorParcela,
+						saldoDevedorAtual,
+						numeroParcela,
+						dataVencimento,
+						valorJurosParcela,
+						valorPrincipalParcela,
+						valorIofDiario));
 		}
+		
+		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
+		financiamento.setValorPrestacao(valorParcela);
 		
 		return financiamento;
 	}
