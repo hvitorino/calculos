@@ -58,6 +58,6 @@ public class FinanciamentoDe20000Em12Vezes {
 	@Test
 	public void valorJurosTotal() {
 		
-		assertEquals(new Double(2333.25), financiamento.getJurosTotal().getValor());
+		assertEquals(new Double(2333.25), financiamento.getValorTotalJuros().getValor());
 	}
 }

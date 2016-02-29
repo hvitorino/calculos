@@ -35,32 +35,27 @@ public class FinanciamentoDe500000Em72Vezes {
 	}
 	
 	@Test
-	public void possui72Parcelas() {
-		
-		assertEquals(72, financiamento.getParcelas().size());
-	}
-	
-	@Test
-	public void parcelaDe11574ponto95() {
-		
-		Parcela parcela = financiamento.getParcelas().get(0);
-		
-		assertEquals(new Double(11574.95), parcela.getValor().getValor());
+	public void valorParcela11574ponto95() {
+		assertEquals(new Double(11574.95), financiamento.getValorPrestacao().getValor());
 	}
 	
 	@Test
 	public void valorEmprestimoAjustado507500() {
-		
 		assertEquals(new Double(507500.00), financiamento.getValorEmprestimoAjustado().getValor());
 	}
 	
 	@Test
-	public void jurosTotalDe333369ponto69() {
-		assertEquals(new Double(333369.69), financiamento.getJurosTotal().getValor());
+	public void valorTotalEmprestimoAjustado833396ponto69() {
+		assertEquals(new Double(833396.69), financiamento.getValorEmprestimoAjustado().getValor());
 	}
 	
 	@Test
-	public void somaDoPrincipalDasParcelasIgualA500000() {
+	public void valorTotalJuros333369ponto69() {
+		assertEquals(new Double(333369.69), financiamento.getValorTotalJuros().getValor());
+	}
+	
+	@Test
+	public void valorPrincipalTotal500000() {
 		
 		ValorMonetario principalTotal = new ValorMonetario(0.0);
 		

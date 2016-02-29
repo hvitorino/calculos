@@ -36,6 +36,7 @@ public class CalculadoraFinanceira {
 		ValorMonetario saldoDevedorAtual = new ValorMonetario(saldoDevedorInicial);
 		
 		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
+		financiamento.setValorPrestacao(valorParcela);
 		
 		for (int numeroParcela = 1; numeroParcela <= opcoes.getQuantidadeParcelas().getValor(); numeroParcela++) {
 			

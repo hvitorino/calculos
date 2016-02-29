@@ -9,7 +9,6 @@ public class Financiamento {
 	private ArrayList<Parcela> parcelas;
 
 	private ValorMonetario valorEmprestimoAjustado;
-	private ValorMonetario valorTotalEmprestimoAjustado;
 	private ValorMonetario valorPrestacao;
 	
 	public Financiamento(OpcoesFinanciamento opcoes) {
@@ -29,7 +28,7 @@ public class Financiamento {
 		this.valorEmprestimoAjustado = valorFinanciadoAjustado;
 	}
 
-	public ValorMonetario getJurosTotal() {
+	public ValorMonetario getValorTotalJuros() {
 		
 		ValorMonetario jurosTotal = new ValorMonetario(0.0);
 		
@@ -42,11 +41,10 @@ public class Financiamento {
 	}
 
 	public ValorMonetario getValorTotalEmprestimoAjustado() {
-		return valorTotalEmprestimoAjustado;
-	}
-
-	public void setValorTotalEmprestimoAjustado(ValorMonetario valorTotalEmprestimoAjustado) {
-		this.valorTotalEmprestimoAjustado = valorTotalEmprestimoAjustado;
+		
+		return this.getOpcoes().getValorFinanciado()
+				.soma(this.getValorTotalJuros())
+				.valorMonetario();
 	}
 
 	public ValorMonetario getValorPrestacao() {
