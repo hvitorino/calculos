@@ -32,6 +32,9 @@ public class FinanciamentoDe23500Em48Vezes {
 			.pronto();
 		
 		financiamento = CalculadoraFinanceira.calcularFinanciamento(opcoes);
+		
+		PlanilhaExcel planilha = new PlanilhaExcel("23500Em48Vezes", financiamento);
+		planilha.salvar();
 	}
 	
 	@Test

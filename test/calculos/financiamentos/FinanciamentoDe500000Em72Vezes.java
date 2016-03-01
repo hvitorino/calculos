@@ -2,7 +2,11 @@ package calculos.financiamentos;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +36,9 @@ public class FinanciamentoDe500000Em72Vezes {
 			.pronto();
 		
 		financiamento = CalculadoraFinanceira.calcularFinanciamento(opcoes);
+		
+		PlanilhaExcel planilha = new PlanilhaExcel("500000Em72Vezes", financiamento);
+		planilha.salvar();
 	}
 	
 	@Test
@@ -127,6 +134,39 @@ public class FinanciamentoDe500000Em72Vezes {
 	@Test
 	public void valorIofTotal16470ponto88() {
 		assertEquals(new Double(16470.88), financiamento.getValorIofTotal().getValor());
+	}
+
+	private void escreverCsv(Financiamento financiamento) {
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			File file = new File("c:\\financiamentos\\500000em72Vezes.csv");
+
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			for(Parcela parcela : financiamento.getParcelas()) {
+				String content = new StringBuilder()
+						.append(parcela.getNumero().getValor() + ";")
+						.append(formatter.format(parcela.getDataVencimento()) + ";")
+						.append(parcela.getPrazoEmDias().getValor() + ";")
+						.append(parcela.getValor().getValor() + ";")
+						.append(parcela.getValorPrincipal().getValor() + ";")
+						.append(parcela.getValorJuros().getValor() + "\r\n")
+						.toString();
+				
+				bw.write(content);
+			}
+			
+			bw.close();
+			System.out.println("Done");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

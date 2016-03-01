@@ -32,6 +32,9 @@ public class FinanciamentoDe20000Em12Vezes {
 			.pronto();
 		
 		financiamento = CalculadoraFinanceira.calcularFinanciamento(opcoes);
+		
+		PlanilhaExcel planilha = new PlanilhaExcel("20000Em12Vezes", financiamento);
+		planilha.salvar();
 	}
 	
 	@Test
