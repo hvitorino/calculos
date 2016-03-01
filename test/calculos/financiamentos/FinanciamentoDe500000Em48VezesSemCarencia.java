@@ -35,8 +35,8 @@ public class FinanciamentoDe500000Em48VezesSemCarencia {
 	}
 	
 	@Test
-	public void valorParcela14687ponto95() {
-		assertEquals(new Double(14687.95), financiamento.getValorPrestacao().getValor());
+	public void valorParcela14687ponto50() {
+		assertEquals(new Double(14687.50), financiamento.getValorPrestacao().getValor());
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class FinanciamentoDe500000Em48VezesSemCarencia {
 	
 	@Test
 	public void valorTotalEmprestimoAjustado704999ponto99() {
-		assertEquals(new Double(704999.99), financiamento.getValorEmprestimoAjustado().getValor());
+		assertEquals(new Double(704999.99), financiamento.getValorTotalEmprestimoAjustado().getValor());
 	}
 	
 	@Test

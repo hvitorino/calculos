@@ -15,7 +15,7 @@ public class CalculadoraFinanceira {
 		Date umMesAntesDoPrimeiroVencimento = subtrairUmMes(opcoes.getDataPrimeiroVencimento()); 
 		
 		ValorInteiro carenciaEmDias = new ValorInteiro(
-				subtrairDatas(
+				calcularDias360(
 						umMesAntesDoPrimeiroVencimento,
 						opcoes.getDataFinanciamento())); 
 		
@@ -42,9 +42,9 @@ public class CalculadoraFinanceira {
 					opcoes.getDataPrimeiroVencimento(),
 					numeroParcela);
 			
-			ValorInteiro prazoParcelaEmDias = subtrairDatas(
+			ValorInteiro prazoParcelaEmDias = new ValorInteiro(subtrairDatas(
 					dataVencimento,
-					opcoes.getDataFinanciamento());
+					opcoes.getDataFinanciamento()));
 			
 			ValorMonetario valorJurosSemCarencia = jurosMensais.getTaxa()
 					 .multiplicaPor(saldoDevedorAtual)
@@ -255,30 +255,22 @@ public class CalculadoraFinanceira {
 		return valorIodAdicionalCalculado.valorMonetario();
 	}
 
-	private static Date calcularDataVencimentoParcela(Date dataPrimeiroVencimento, int numeroParcela) {
+	private static Date calcularDataVencimentoParcela(Date dataPrimeiroVencimento, int numeroParcela) throws ParseException {
 		
-		Date dataVencimento;
+		Date dataVencimento = dataPrimeiroVencimento;
 		
-		if (numeroParcela == 1) {
-			dataVencimento = dataPrimeiroVencimento;
-		} else {
+		if (numeroParcela > 1) {
 			
-			Calendar dataCalculada = Calendar.getInstance();
-			dataCalculada.setTime(dataPrimeiroVencimento);
-			dataCalculada.add(Calendar.MONTH, numeroParcela - 1);
-
-			dataCalculada.set(Calendar.HOUR_OF_DAY, 0);
-			dataCalculada.set(Calendar.MINUTE, 0);
-			dataCalculada.set(Calendar.SECOND, 0);
-			dataCalculada.set(Calendar.MILLISECOND, 0);
+			int indiceParcela = 1;
 			
-			dataVencimento = dataCalculada.getTime();
+			while(indiceParcela < numeroParcela) {
+				dataVencimento = somaUmMes(dataVencimento);
+				indiceParcela++;
+			}
 		}
 		
 		return dataVencimento;
 	}
-	
-	
 	
 	private static Parcela criarParcela(ValorMonetario valorDaParcela, ValorMonetario saldoDevedor, int numeroParcela,
 			Date dataVencimento, ValorMonetario valorJuros, ValorMonetario valorPrincipal,
@@ -336,6 +328,29 @@ public class CalculadoraFinanceira {
 		
 		return construirData(diaMesAnterior, mes, ano);
 	}
+	
+	public static Date somaUmMes(Date data) throws ParseException {
+		
+		Calendar dataCalculada = Calendar.getInstance();
+		dataCalculada.setTime(data);
+		
+		int dia = dataCalculada.get(Calendar.DAY_OF_MONTH);
+		int diaMesAnterior;
+		
+		dataCalculada.add(Calendar.MONTH, 1);
+		
+		int mes = dataCalculada.get(Calendar.MONTH) + 1;
+		int ano = dataCalculada.get(Calendar.YEAR);
+		int ultimoDiaMesAnterior = Mes.get(mes).doAno(ano).getUltimoDia();
+		
+		if(dia > ultimoDiaMesAnterior) {
+			diaMesAnterior = ultimoDiaMesAnterior;
+		} else {
+			diaMesAnterior = dia;
+		}
+		
+		return construirData(diaMesAnterior, mes, ano);
+	}
 
 	public static Date construirData(int dia, int mes, int ano) {
 		
@@ -349,5 +364,32 @@ public class CalculadoraFinanceira {
 		data.set(Calendar.MILLISECOND, 0);
 		
 		return data.getTime();
+	}
+	
+	public static int calcularDias360(Date ini, Date fin){   
+		Calendar cini = Calendar.getInstance();
+		cini.setTime(ini);
+		Calendar cfin = Calendar.getInstance();
+		cfin.setTime(fin);
+		int anos = cfin.get(Calendar.YEAR) - cini.get(Calendar.YEAR);
+		int meses = cfin.get(Calendar.MONTH) - cini.get(Calendar.MONTH);
+		int dia1 = 0, dia2 = 0;
+		if (cini.get(Calendar.DATE) == 31) {
+			dia1 = 30;
+		} else if (cini.get(Calendar.MONTH) == Calendar.FEBRUARY && cini.get(Calendar.DATE) >= 28) {
+			dia1 = 30;
+		} else {
+			dia1 = cini.get(Calendar.DATE);
+		}
+		if (cfin.get(Calendar.DATE) == 31) {
+			dia2 = 30;
+		} else if (cfin.get(Calendar.MONTH) == Calendar.FEBRUARY && cfin.get(Calendar.DATE) >= 28) {
+			dia2 = 30;
+		} else {
+			dia2 = cfin.get(Calendar.DATE);
+		}
+		int dias = dia2 - dia1;
+		int diasLab = anos * 360 + meses * 30 + dias;
+		return Math.abs(diasLab);  
 	}
 }

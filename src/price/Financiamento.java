@@ -70,4 +70,5 @@ public class Financiamento {
 	private void setOpcoes(OpcoesFinanciamento opcoes) {
 		this.opcoes = opcoes;
 	}
+	
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Mes {
 
-	public static final Mes JANEIRO = new Mes(2, 31);
+	public static final Mes JANEIRO = new Mes(1, 31);
 	public static final Mes FEVEREIRO = new Mes(2);
 	public static final Mes MARCO = new Mes(3, 31);
 	public static final Mes ABRIL = new Mes(4, 30);
@@ -29,13 +29,13 @@ public class Mes {
 			meses.put(MARCO.getMes(), MARCO);
 			meses.put(ABRIL.getMes(), ABRIL);
 			meses.put(MAIO.getMes(), MAIO);
-			meses.put(MAIO.getMes(), JUNHO);
-			meses.put(MAIO.getMes(), JULHO);
-			meses.put(MAIO.getMes(), AGOSTO);
-			meses.put(MAIO.getMes(), SETEMBRO);
-			meses.put(MAIO.getMes(), OUTUBRO);
-			meses.put(MAIO.getMes(), NOVEMBRO);
-			meses.put(MAIO.getMes(), DEZEMBRO);
+			meses.put(JUNHO.getMes(), JUNHO);
+			meses.put(JULHO.getMes(), JULHO);
+			meses.put(AGOSTO.getMes(), AGOSTO);
+			meses.put(SETEMBRO.getMes(), SETEMBRO);
+			meses.put(OUTUBRO.getMes(), OUTUBRO);
+			meses.put(NOVEMBRO.getMes(), NOVEMBRO);
+			meses.put(DEZEMBRO.getMes(), DEZEMBRO);
 		}
 		
 		return meses.get(mes);
