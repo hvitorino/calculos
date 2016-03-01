@@ -46,12 +46,12 @@ public class FinanciamentoDe500000Em72Vezes {
 	
 	@Test
 	public void valorTotalEmprestimoAjustado833396ponto69() {
-		assertEquals(new Double(833396.69), financiamento.getValorEmprestimoAjustado().getValor());
+		assertEquals(new Double(833396.69), financiamento.getValorTotalEmprestimoAjustado().getValor());
 	}
 	
 	@Test
-	public void valorTotalJuros333369ponto69() {
-		assertEquals(new Double(333369.69), financiamento.getValorTotalJuros().getValor());
+	public void valorTotalJuros333396ponto69() {
+		assertEquals(new Double(333396.69), financiamento.getValorTotalJuros().getValor());
 	}
 	
 	@Test
@@ -114,5 +114,13 @@ public class FinanciamentoDe500000Em72Vezes {
 		Parcela primeiraParcela = financiamento.getParcelas().get(71);
 
 		assertEquals(new Double(2220), primeiraParcela.getPrazoEmDias().getValor());
+	}
+	
+	@Test
+	public void valorPrincipalParcela2() {
+		
+		Parcela segundaParcela = financiamento.getParcelas().get(1);
+
+		assertEquals(new Double(484.34), segundaParcela.getValorPrincipal().getValor());
 	}
 }
