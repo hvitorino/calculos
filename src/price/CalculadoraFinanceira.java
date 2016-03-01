@@ -63,7 +63,8 @@ public class CalculadoraFinanceira {
 					valorJurosCarenciaParcelado, 
 					jurosMensais);
 			
-			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = valorJurosParcela.subtrai(valorJurosSemCarencia)
+			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = valorJurosParcela
+					.subtrai(valorJurosSemCarencia)
 					.valorMonetario(); 
 			
 			valorJurosCarenciaParcelado = valorJurosCarenciaParcelado
