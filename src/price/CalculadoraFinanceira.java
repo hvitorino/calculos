@@ -1,7 +1,6 @@
 package price;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -279,30 +278,7 @@ public class CalculadoraFinanceira {
 		return dataVencimento;
 	}
 	
-	public static Date subtrairUmMes(Date data) throws ParseException {
-		
-		Calendar dataCalculada = Calendar.getInstance();
-		dataCalculada.setTime(data);
-		
-		if (dataCalculada.get(Calendar.MONTH) == Calendar.MARCH 
-				&& dataCalculada.get(Calendar.DAY_OF_MONTH) > 28) {
-			
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			String textoPrimeiroMarco = "01/03/" + dataCalculada.get(Calendar.YEAR);
-			
-			Calendar dataPrimeiroMarco = Calendar.getInstance();
-			dataPrimeiroMarco.setTime(formatter.parse(textoPrimeiroMarco));
-			
-			dataPrimeiroMarco.add(Calendar.DAY_OF_MONTH, -1);
-			
-			return dataPrimeiroMarco.getTime();
-		} else {
-			
-			dataCalculada.add(Calendar.DAY_OF_MONTH, -30);
-			
-			return dataCalculada.getTime();
-		}
-	}
+	
 	
 	private static Parcela criarParcela(ValorMonetario valorDaParcela, ValorMonetario saldoDevedor, int numeroParcela,
 			Date dataVencimento, ValorMonetario valorJuros, ValorMonetario valorPrincipal,
@@ -333,4 +309,45 @@ public class CalculadoraFinanceira {
 		return new ValorInteiro((int) (Math.floor(diferenca / milisegundosPorDia)));
 	}
 	
+	public static int calcularUltimoDiaMes(int ano, int mes) {
+		
+		return Mes.get(mes).doAno(ano).getUltimoDia();
+	}
+	
+	public static Date subtrairUmMes(Date data) throws ParseException {
+		
+		Calendar dataCalculada = Calendar.getInstance();
+		dataCalculada.setTime(data);
+		
+		int dia = dataCalculada.get(Calendar.DAY_OF_MONTH);
+		int diaMesAnterior;
+		
+		dataCalculada.add(Calendar.MONTH, -1);
+		
+		int mes = dataCalculada.get(Calendar.MONTH) + 1;
+		int ano = dataCalculada.get(Calendar.YEAR);
+		int ultimoDiaMesAnterior = Mes.get(mes).doAno(ano).getUltimoDia();
+		
+		if(dia > ultimoDiaMesAnterior) {
+			diaMesAnterior = ultimoDiaMesAnterior;
+		} else {
+			diaMesAnterior = dia;
+		}
+		
+		return construirData(diaMesAnterior, mes, ano);
+	}
+
+	public static Date construirData(int dia, int mes, int ano) {
+		
+		Calendar data = Calendar.getInstance();
+		data.set(Calendar.DAY_OF_MONTH, dia);
+		data.set(Calendar.MONTH, mes - 1);
+		data.set(Calendar.YEAR, ano);
+		data.set(Calendar.HOUR_OF_DAY, 0);
+		data.set(Calendar.MINUTE, 0);
+		data.set(Calendar.SECOND, 0);
+		data.set(Calendar.MILLISECOND, 0);
+		
+		return data.getTime();
+	}
 }
