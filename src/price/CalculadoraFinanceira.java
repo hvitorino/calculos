@@ -25,6 +25,10 @@ public class CalculadoraFinanceira {
 		
 		ValorMonetario valorJurosCarenciaParcelado = new ValorMonetario(jurosCarencia);
 		
+		ValorMonetario valorIofAdicional = calcularIofAdicional(
+				opcoes.getValorFinanciado(),
+				opcoes.getTaxaIofAdicional());
+		
 		ValorMonetario saldoDevedorInicial = opcoes.getValorFinanciado()
 				.soma(jurosCarencia)
 				.valorMonetario();
@@ -35,6 +39,8 @@ public class CalculadoraFinanceira {
 				opcoes.getQuantidadeParcelas());
 
 		ValorMonetario saldoDevedorAtual = new ValorMonetario(saldoDevedorInicial);
+		
+		ValorMonetario valorTotalIof = new ValorMonetario(valorIofAdicional);
 		
 		for (int numeroParcela = 1; numeroParcela <= opcoes.getQuantidadeParcelas().getValor(); numeroParcela++) {
 			
@@ -74,6 +80,10 @@ public class CalculadoraFinanceira {
 					opcoes.getDataFinanciamento(),
 					dataVencimento);
 
+			valorTotalIof = valorTotalIof
+					.soma(valorIofDiario)
+					.valorMonetario();
+			
 			saldoDevedorAtual = saldoDevedorAtual
 					.soma(valorJurosSemCarencia)
 					.subtrai(valorJurosParcela)
@@ -94,6 +104,8 @@ public class CalculadoraFinanceira {
 		
 		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
 		financiamento.setValorPrestacao(valorParcela);
+		financiamento.setValorIofAdicional(valorIofAdicional);
+		financiamento.setValorIofTotal(valorTotalIof);
 		
 		return financiamento;
 	}

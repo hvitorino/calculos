@@ -7,9 +7,10 @@ public class Financiamento {
 
 	private OpcoesFinanciamento opcoes;
 	private ArrayList<Parcela> parcelas;
-
 	private ValorMonetario valorEmprestimoAjustado;
 	private ValorMonetario valorPrestacao;
+	private ValorMonetario valorIofAdicional;
+	private ValorMonetario valorIofTotal;
 	
 	public Financiamento(OpcoesFinanciamento opcoes) {
 		this.parcelas = new ArrayList<>();
@@ -65,6 +66,22 @@ public class Financiamento {
 
 	public OpcoesFinanciamento getOpcoes() {
 		return opcoes;
+	}
+	
+	public ValorMonetario getValorIofAdicional() {
+		return valorIofAdicional;
+	}
+
+	public void setValorIofAdicional(ValorMonetario valorIofAdicional) {
+		this.valorIofAdicional = valorIofAdicional;
+	}
+
+	public ValorMonetario getValorIofTotal() {
+		return valorIofTotal;
+	}
+
+	public void setValorIofTotal(ValorMonetario valorIofTotal) {
+		this.valorIofTotal = valorIofTotal;
 	}
 
 	private void setOpcoes(OpcoesFinanciamento opcoes) {

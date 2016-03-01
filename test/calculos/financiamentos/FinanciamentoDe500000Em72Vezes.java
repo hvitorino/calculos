@@ -25,8 +25,8 @@ public class FinanciamentoDe500000Em72Vezes {
 		OpcoesFinanciamento opcoes = Financiar.valor(500000.00)
 			.divididoEmParcelas(72)
 			.comJuros(1.5, PeriodicidadeTaxa.MENSAL)
-			.comIofDiario(0.0)
-			.comIofAdicional(0.0)
+			.comIofDiario(0.0082)
+			.comIofAdicional(0.38)
 			.contratadoEm("27/02/2016")
 			.vencendoAPrimeiraParcelaEm("27/04/2016")
 			.pronto();
@@ -123,4 +123,10 @@ public class FinanciamentoDe500000Em72Vezes {
 
 		assertEquals(new Double(484.34), segundaParcela.getValorPrincipal().getValor());
 	}
+	
+	@Test
+	public void valorIofTotal16470ponto88() {
+		assertEquals(new Double(16470.88), financiamento.getValorIofTotal().getValor());
+	}
+	
 }
