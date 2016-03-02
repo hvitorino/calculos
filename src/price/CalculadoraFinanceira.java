@@ -44,46 +44,20 @@ public class CalculadoraFinanceira {
 		
 		for (int numeroParcela = 1; numeroParcela <= opcoes.getQuantidadeParcelas().getValor(); numeroParcela++) {
 			
-			Date dataVencimento = calcularDataVencimentoParcela(
-					opcoes.getDataPrimeiroVencimento(),
-					numeroParcela);
-			
-			ValorInteiro prazoParcelaEmDias = new ValorInteiro(subtrairDatas(
-					dataVencimento,
-					opcoes.getDataFinanciamento()));
-			
+			Parcela parcela = calcularParcela(
+					opcoes,
+					numeroParcela,
+					valorParcela,
+					saldoDevedorAtual,
+					valorJurosCarenciaParcelado,
+					jurosMensais);
+
 			ValorMonetario valorJurosSemCarencia = jurosMensais.getTaxa()
 					 .multiplicaPor(saldoDevedorAtual)
 					 .dividePor(ValorDecimal.CEM)
 					 .valorMonetario();
 			
-			ValorMonetario valorJurosParcela = calcularJurosParcela(
-					valorParcela, 
-					saldoDevedorAtual, 
-					valorJurosCarenciaParcelado, 
-					jurosMensais);
-			
-			ValorMonetario valorPrincipalParcela = valorParcela
-					.subtrai(valorJurosParcela)
-					.valorMonetario();
-			
-			ValorMonetario valorIofDiario = calcularIofDiarioParcela(
-					valorPrincipalParcela,
-					opcoes.getTaxaIofDiario(),
-					opcoes.getDataFinanciamento(),
-					dataVencimento);
-			
-			Parcela parcela = criarParcela(
-					valorParcela,
-					saldoDevedorAtual,
-					numeroParcela,
-					dataVencimento,
-					valorJurosParcela,
-					valorPrincipalParcela,
-					valorIofDiario,
-					prazoParcelaEmDias);
-
-			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = valorJurosParcela
+			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = parcela.getValorJuros()
 					.subtrai(valorJurosSemCarencia)
 					.valorMonetario();
 			
@@ -92,13 +66,13 @@ public class CalculadoraFinanceira {
 					.valorMonetario();
 			
 			valorTotalIof = valorTotalIof
-					.soma(valorIofDiario)
+					.soma(parcela.getValorJuros())
 					.valorMonetario();
 			
 			saldoDevedorAtual = saldoDevedorAtual
 					.soma(valorJurosSemCarencia)
-					.subtrai(valorJurosParcela)
-					.subtrai(valorPrincipalParcela)
+					.subtrai(parcela.getValorJuros())
+					.subtrai(parcela.getValorPrincipal())
 					.valorMonetario();
 			
 			financiamento.adicionaParcela(parcela);
@@ -110,6 +84,60 @@ public class CalculadoraFinanceira {
 		financiamento.setValorIofTotal(valorTotalIof);
 		
 		return financiamento;
+	}
+
+	private static Parcela calcularParcela(OpcoesFinanciamento opcoes, int numeroParcela, 
+			ValorMonetario valorParcela, ValorMonetario saldoDevedorAtual, 
+			ValorMonetario valorJurosCarenciaParcelado, Juros jurosMensais) throws ParseException {
+		
+		Date dataVencimento = calcularDataVencimentoParcela(
+				opcoes.getDataPrimeiroVencimento(),
+				numeroParcela);
+		
+		ValorInteiro prazoParcelaEmDias = new ValorInteiro(subtrairDatas(
+				dataVencimento,
+				opcoes.getDataFinanciamento()));
+		
+		ValorMonetario valorJurosParcela;
+		ValorMonetario valorPrincipalParcela;
+		
+		if (numeroParcela == opcoes.getQuantidadeParcelas().getValor().intValue()) {
+			
+			valorPrincipalParcela = saldoDevedorAtual;
+			
+			valorJurosParcela = valorParcela
+					.subtrai(valorPrincipalParcela)
+					.valorMonetario();
+			
+		} else {
+			
+			valorJurosParcela = calcularJurosParcela(
+					valorParcela, 
+					saldoDevedorAtual, 
+					valorJurosCarenciaParcelado, 
+					jurosMensais);
+			
+			valorPrincipalParcela = valorParcela
+					.subtrai(valorJurosParcela)
+					.valorMonetario();
+		}
+		
+		
+		ValorMonetario valorIofDiario = calcularIofDiarioParcela(
+				valorPrincipalParcela,
+				opcoes.getTaxaIofDiario(),
+				opcoes.getDataFinanciamento(),
+				dataVencimento);
+		
+		return criarParcela(
+				valorParcela,
+				saldoDevedorAtual,
+				numeroParcela,
+				dataVencimento,
+				valorJurosParcela,
+				valorPrincipalParcela,
+				valorIofDiario,
+				prazoParcelaEmDias);
 	}
 
 	private static ValorMonetario calcularJurosParcela(ValorMonetario valorParcela, ValorMonetario saldoDevedorAtual,
