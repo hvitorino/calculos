@@ -63,14 +63,6 @@ public class CalculadoraFinanceira {
 					valorJurosCarenciaParcelado, 
 					jurosMensais);
 			
-			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = valorJurosParcela
-					.subtrai(valorJurosSemCarencia)
-					.valorMonetario(); 
-			
-			valorJurosCarenciaParcelado = valorJurosCarenciaParcelado
-					.subtrai(valorJurosCarenciaAcrescidoNaParcela)
-					.valorMonetario();
-			
 			ValorMonetario valorPrincipalParcela = valorParcela
 					.subtrai(valorJurosParcela)
 					.valorMonetario();
@@ -80,7 +72,25 @@ public class CalculadoraFinanceira {
 					opcoes.getTaxaIofDiario(),
 					opcoes.getDataFinanciamento(),
 					dataVencimento);
+			
+			Parcela parcela = criarParcela(
+					valorParcela,
+					saldoDevedorAtual,
+					numeroParcela,
+					dataVencimento,
+					valorJurosParcela,
+					valorPrincipalParcela,
+					valorIofDiario,
+					prazoParcelaEmDias);
 
+			ValorMonetario valorJurosCarenciaAcrescidoNaParcela = valorJurosParcela
+					.subtrai(valorJurosSemCarencia)
+					.valorMonetario();
+			
+			valorJurosCarenciaParcelado = valorJurosCarenciaParcelado
+					.subtrai(valorJurosCarenciaAcrescidoNaParcela)
+					.valorMonetario();
+			
 			valorTotalIof = valorTotalIof
 					.soma(valorIofDiario)
 					.valorMonetario();
@@ -91,16 +101,7 @@ public class CalculadoraFinanceira {
 					.subtrai(valorPrincipalParcela)
 					.valorMonetario();
 			
-			financiamento.adicionaParcela(
-					criarParcela(
-						valorParcela,
-						saldoDevedorAtual,
-						numeroParcela,
-						dataVencimento,
-						valorJurosParcela,
-						valorPrincipalParcela,
-						valorIofDiario,
-						prazoParcelaEmDias));
+			financiamento.adicionaParcela(parcela);
 		}
 		
 		financiamento.setValorEmprestimoAjustado(saldoDevedorInicial);
