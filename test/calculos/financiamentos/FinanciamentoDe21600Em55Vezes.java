@@ -2,13 +2,9 @@ package calculos.financiamentos;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import price.CalculadoraFinanceira;
@@ -21,10 +17,10 @@ import price.ValorMonetario;
 
 public class FinanciamentoDe21600Em55Vezes {
 
-	private Financiamento financiamento;
+	private static Financiamento financiamento;
 
-	@Before
-	public void cenario() throws ParseException {
+	@BeforeClass
+	public static void cenario() throws ParseException {
 
 		OpcoesFinanciamento opcoes = Financiar.valor(21600.00).divididoEmParcelas(55)
 				.comJuros(1.62, PeriodicidadeTaxa.MENSAL).comIofDiario(0.0).comIofAdicional(0.0)

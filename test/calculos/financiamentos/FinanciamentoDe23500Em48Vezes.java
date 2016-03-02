@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import price.CalculadoraFinanceira;
@@ -17,10 +17,10 @@ import price.ValorMonetario;
 
 public class FinanciamentoDe23500Em48Vezes {
 	
-	private Financiamento financiamento;
+	private static Financiamento financiamento;
 
-	@Before
-	public void cenario() throws ParseException {
+	@BeforeClass
+	public static void cenario() throws ParseException {
 
 		OpcoesFinanciamento opcoes = Financiar.valor(23500.00)
 			.divididoEmParcelas(48)

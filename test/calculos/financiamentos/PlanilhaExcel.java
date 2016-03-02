@@ -30,8 +30,16 @@ public class PlanilhaExcel {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			
+			StringBuilder tabela = new StringBuilder()
+					.append("Número;")
+					.append("Vencimento;")
+					.append("Prazo (dias da contratação);")
+					.append("Valor Parcela;")
+					.append("Valor Principal;")
+					.append("Valor Juros\r\n");
+			
 			for(Parcela parcela : financiamento.getParcelas()) {
-				String content = new StringBuilder()
+				String content = tabela
 						.append(parcela.getNumero().getValor() + ";")
 						.append(formatter.format(parcela.getDataVencimento()) + ";")
 						.append(parcela.getPrazoEmDias().getValor() + ";")
@@ -44,9 +52,7 @@ public class PlanilhaExcel {
 			}
 			
 			bw.close();
-			System.out.println("Done");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -8,8 +8,9 @@ public class ValorDecimal {
 	public static final ValorDecimal UM = new ValorDecimal(1);
 	public static final ValorDecimal CEM = new ValorDecimal(100);
 
-	private final RoundingMode ARREDONDAMENTO_PADRAO = RoundingMode.HALF_EVEN;
-	private final Integer PRECISAO_PADRAO = 20; 
+	private final RoundingMode ARREDONDAMENTO_PADRAO = RoundingMode.HALF_UP;
+	private final Integer PRECISAO_INFINITA = -1;
+	private final Integer PRECISAO_PADRAO = PRECISAO_INFINITA;
 	
 	private final Double valorOperacional;
 	private final Integer precisao;
@@ -72,6 +73,10 @@ public class ValorDecimal {
 	}
 	
 	public Double getValor() {
+
+		if (this.getPrecisao() == PRECISAO_INFINITA) {
+			return this.getValorOperacional();
+		}
 		
 		BigDecimal valorComPrecisao = new BigDecimal(this.valorOperacional.toString())
 				.setScale(this.getPrecisao(), ARREDONDAMENTO_PADRAO);

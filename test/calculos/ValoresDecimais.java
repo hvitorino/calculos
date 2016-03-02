@@ -17,10 +17,10 @@ public class ValoresDecimais {
 	}
 	
 	@Test
-	public void valoresParesSaoArredondadosParaBaixo() {
-		ValorMonetario valor = new ValorMonetario(10.125);
+	public void _055_arrendondado_igual_06() {
+		ValorMonetario valor = new ValorMonetario(0.055);
 		
-		assertEquals(new Double(10.12), valor.getValor());
+		assertEquals(new Double(0.06), valor.getValor());
 	}
 	
 	@Test
