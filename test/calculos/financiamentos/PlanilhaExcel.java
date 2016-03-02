@@ -36,21 +36,21 @@ public class PlanilhaExcel {
 					.append("Prazo (dias da contratação);")
 					.append("Valor Parcela;")
 					.append("Valor Principal;")
-					.append("Valor Juros\r\n");
+					.append("Valor Juros;")
+					.append("Saldo Devedor\r\n");
 			
 			for(Parcela parcela : financiamento.getParcelas()) {
-				String content = tabela
-						.append(parcela.getNumero().getValor() + ";")
-						.append(formatter.format(parcela.getDataVencimento()) + ";")
-						.append(parcela.getPrazoEmDias().getValor() + ";")
-						.append(parcela.getValor().getValor() + ";")
-						.append(parcela.getValorPrincipal().getValor() + ";")
-						.append(parcela.getValorJuros().getValor() + "\r\n")
-						.toString();
-				
-				bw.write(content);
+				tabela
+					.append(parcela.getNumero() + ";")
+					.append(formatter.format(parcela.getDataVencimento()) + ";")
+					.append(parcela.getPrazoEmDias() + ";")
+					.append(parcela.getValor() + ";")
+					.append(parcela.getValorPrincipal() + ";")
+					.append(parcela.getValorJuros() + ";")
+					.append(parcela.getSaldoDevedor() + "\r\n");
 			}
 			
+			bw.write(tabela.toString());
 			bw.close();
 		} catch (Exception e) {
 			e.printStackTrace();

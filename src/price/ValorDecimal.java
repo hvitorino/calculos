@@ -103,4 +103,9 @@ public class ValorDecimal {
 	private Integer getPrecisao() {
 		return precisao;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%1$,." + this.getPrecisao() + "f", this.valorOperacional);
+	}
 }
