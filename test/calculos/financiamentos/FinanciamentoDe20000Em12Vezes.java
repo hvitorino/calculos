@@ -49,13 +49,13 @@ public class FinanciamentoDe20000Em12Vezes {
 	}
 	
 	@Test
-	public void valorTotalJuros2333ponto25() {
-		assertEquals(new Double(2333.25), financiamento.getValorTotalJuros().getValor());
+	public void valorTotalJuros2333ponto24() {
+		assertEquals(new Double(2333.24), financiamento.getValorTotalJuros().getValor());
 	}
 	
 	@Test
-	public void valorTotalEmprestimoAjustado22333ponto25() {
-		assertEquals(new Double(22333.25), financiamento.getValorTotalEmprestimoAjustado().getValor());
+	public void valorTotalEmprestimoAjustado22333ponto24() {
+		assertEquals(new Double(22333.24), financiamento.getValorTotalEmprestimoAjustado().getValor());
 	}
 	
 	@Test

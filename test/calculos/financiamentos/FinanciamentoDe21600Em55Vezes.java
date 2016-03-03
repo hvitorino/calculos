@@ -79,10 +79,10 @@ public class FinanciamentoDe21600Em55Vezes {
 	}
 
 	@Test
-	public void valorPrincipalParcela2_251ponto32() {
+	public void valorPrincipalParcela2_251ponto31() {
 		Parcela parcela = financiamento.getParcelas().get(1);
 
-		assertEquals(new Double(251.32), parcela.getValorPrincipal().getValor());
+		assertEquals(new Double(251.31), parcela.getValorPrincipal().getValor());
 	}
 
 	@Test

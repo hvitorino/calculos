@@ -29,9 +29,10 @@ public class CalculadoraFinanceira {
 				opcoes.getValorFinanciado(),
 				opcoes.getTaxaIofAdicional());
 		
-		ValorMonetario saldoDevedorInicial = opcoes.getValorFinanciado()
+		ValorMonetario saldoDevedorInicial = new ValorMonetario(opcoes.getValorFinanciado()
 				.soma(jurosCarencia)
-				.valorMonetario();
+				.valorMonetario()
+				.getValor());
 		
 		ValorMonetario valorParcela = calcularValorDaParcela(
 				saldoDevedorInicial,
@@ -156,7 +157,7 @@ public class CalculadoraFinanceira {
 					.valorMonetario();
 		}
 		
-		return valorJurosParcela;
+		return new ValorMonetario(valorJurosParcela.getValor());
 	}
 
 	private static ValorMonetario calcularJurosCarencia(ValorMonetario valorFinanciado, Juros juros,
