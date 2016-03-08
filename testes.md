@@ -10,6 +10,7 @@
     - Manter ambiente de desenvolvimento e testes sincronizados sempre que possível
  - Dificuldade em saber o que consta na versão publicada
     - Escrever notas de liberação a cada publicação
+
 ### Procedimentos de teste
  - Testar funcionalidades e bug fixes liberados e relados nas notas de liberação
  - Definir um ciclo de testes (a cada deploy?)
